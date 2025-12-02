@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f13
+ * @version vST2025.10f17
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -26,16 +26,21 @@ public class SChunkGenerator extends Component
     
     public MaterialFile material;
     
-    // Tempo máximo para atualizar o estado de jogo atual.
+    // Constantes públicas de acesso pública.
     
-    public static final float UPDATE_INTERVAL = 1.0f;
+    /**
+     * Tempo máximo em tiques para atualizar o estado de jogo atual.
+     */
+    public static final float UPDATE_INTERVAL = 0.5f;
     
-    // Quantidade de pedaços por cada quadro.
+    /**
+     * Quantidade de pedaços por cada quadro.
+     */
+    public static final int CHUNKS_PER_FRAME = 2;
     
-    public static final int CHUNKS_PER_FRAME = 1;
-    
-    // Tamanho máximo da fila de pedaços.
-    
+    /**
+     * Tamanho máximo da fila de pedaços.
+     */
     public static final int MAX_QUEUED_CHUNKS = CHUNKS_PER_FRAME * CHUNKS_PER_FRAME;
     
     // Campos privados.
@@ -48,13 +53,9 @@ public class SChunkGenerator extends Component
     
     private final Map<Long, SChunk> chunks = new HashMap<Long, SChunk>();
     
-    // A definição de posições dos pedaços renderizados.
-    
-    private final Set<Long> renderedChunks = new HashSet<Long>();
-    
     // O tempo em tiques para gerenciamento geral.
     
-    private float ticks = 0f;
+    private float ticks = 0;
     
     // O gerenciador de jogadores em lista.
     
@@ -68,10 +69,6 @@ public class SChunkGenerator extends Component
     
     private final Queue<Long> queuedChunks = new LinkedList<Long>();
     
-    // A referência de posição para o pedaço do mundo.
-    
-    private Vector2 chunkPosition = null;
-    
     // A referência de posição para o jogador selecionado.
     
     private Vector3 playerPosition = new Vector3();
@@ -79,11 +76,6 @@ public class SChunkGenerator extends Component
     // A referência de posições para os jogadores.
     
     private final Set<Long> playerChunkPositions = new HashSet<Long>();
-    
-    // As distâncias normais e quadradas.
-    
-    private float distanceSquare = -1f;
-    private float minDistanceSquare = -1;
     
     // Métodos públicos.
     
@@ -108,12 +100,26 @@ public class SChunkGenerator extends Component
     {
         ticks += Math.bySecond();
         
-        if(ticks <= UPDATE_INTERVAL) return;
-        
-        neededChunks.clear();
-        
+        if(ticks > UPDATE_INTERVAL)
+        {
+            update();
+            
+            ticks = 0;
+        }
+    }
+    
+    /**
+     * Crie pedaços em gatilhos, permitindo várias chamadas agendadas.
+     */
+    public void update()
+    {
         for(SPlayerController player : players)
         {
+            if(player == null || !player.getObject().exists())
+            {
+                continue;
+            }
+            
             playerPosition.set(player.getObject().getGlobalPosition());
             
             int px = (int)(playerPosition.getX() / GlobalChunkData.W);
@@ -130,56 +136,6 @@ public class SChunkGenerator extends Component
             }
         }
         
-        Iterator<Map.Entry<Long, SChunk>> iterator = chunks.entrySet().iterator();
-        
-        while(iterator.hasNext())
-        {
-            Map.Entry<Long, SChunk> set = iterator.next();
-            
-            long key = set.getKey();
-            
-            SpatialObject value = set.getValue().getObject();
-            
-            if(value == null || !value.exists())
-            {
-                iterator.remove();
-                
-                continue;
-            }
-            
-            SChunk sChunk = set.getValue();
-            CChunk cChunk = value.findComponent(CChunk.class);
-            
-            if(sChunk == null || cChunk == null)
-            {
-                iterator.remove();
-                
-                continue;
-            }
-            
-            chunkPosition = cChunk.getGridPosition();
-            
-            float cx = chunkPosition.getX();
-            float cz = chunkPosition.getY();
-            
-            minDistanceSquare = Float.MAX_VALUE;
-            
-            for(long coord : playerChunkPositions)
-            {
-                float dx = cx - CoordinatesUtils.extractX(coord);
-                float dz = cz - CoordinatesUtils.extractZ(coord);
-                
-                distanceSquare = ((dx * dx) + (dz * dz));
-                
-                if(distanceSquare < minDistanceSquare)
-                {
-                    minDistanceSquare = distanceSquare;
-                }
-                
-                if(minDistanceSquare == 0) break;
-            }
-        }
-        
         for(long coord : neededChunks)
         {
             if(!chunks.containsKey(coord) && !queuedChunks.contains(coord) && queuedChunks.size() <= MAX_QUEUED_CHUNKS) queuedChunks.add(coord);
@@ -191,8 +147,6 @@ public class SChunkGenerator extends Component
             
             generate(coord);
         }
-        
-        ticks = 0f;
     }
     
     /**

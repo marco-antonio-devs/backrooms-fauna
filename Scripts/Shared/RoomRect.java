@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.08f3
+ * @version vST2025.10f17
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -29,7 +29,7 @@ public class RoomRect
     // Construtores públicos.
     
     /**
-     * Crie uma nova instância de retângulo imaginário para salas.
+     * Crie uma nova instância de retângulo para salas.
      *
      * @param x A coordenada X do pivô.
      * @param z A coordenada Z do pivô.
@@ -48,10 +48,13 @@ public class RoomRect
     
     /**
      * Retorne um verificador de intersecção entre dois retângulos imaginários.
+     * <p>
+     * Utiliza uma margem de 1, tanto ao sentido negativo quanto ao positivo.
+     * </p>
      *
      * @param other O outro retângulo para fins de medida.
      *
-     * @return {@code true} para indicar que há uma intersecção entre este e o outro retângulo.
+     * @return Um valor booleano ({@code true} para indicar que há uma intersecção entre este e o outro retângulo).
      */
     public boolean haveIntersectionWith(RoomRect other)
     {

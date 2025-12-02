@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.07f7
+ * @version vST2025.10f17
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -79,24 +79,35 @@ public class CChunk extends Component
     {
         final OH3LevelIntArray voxels = parentSChunk.getVoxelArray();
         
-        CChunkData d = new CChunkData();
-        
-        ChunkBuffers.simulate(voxels, d);
-        generateBuffers(d);
-        
-        ChunkBuffers.generateMesh(
-            voxels,
-            localVerticesBuffer,
-            localPolygonsBuffer,
-            localNormalsBuffer,
-            localUVBuffer,
-            verticeIndex
-        );
-        
-        Vertex result = apply();
-        
-        model.setVertex(result);
-        collider.setVertex(result);
+        new AsyncTask(new AsyncRunnable()
+        {
+            public Object onBackground(Object input)
+            {
+                CChunkData d = new CChunkData();
+                
+                ChunkBuffers.simulate(voxels, d);
+                generateBuffers(d);
+                
+                ChunkBuffers.generateMesh(
+                    voxels,
+                    localVerticesBuffer,
+                    localPolygonsBuffer,
+                    localNormalsBuffer,
+                    localUVBuffer,
+                    verticeIndex
+                );
+                
+                return null;
+            }
+            
+            public void onEngine(Object result)
+            {
+                Vertex v = apply();
+                
+                model.setVertex(v);
+                collider.setVertex(v);
+            }
+        });
     }
     
     /**
@@ -162,7 +173,7 @@ public class CChunk extends Component
         vertex.setNormals(localNormalsBuffer);
         vertex.setUVs(localUVBuffer);
         
-        vertex.apply(false, true);
+        vertex.apply(true, true);
         
         return vertex;
     }
