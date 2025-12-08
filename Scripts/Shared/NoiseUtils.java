@@ -16,7 +16,6 @@ package JAVARuntime;
 /**
  * Classe utilitária de ruído.
  *
- *
  * @author Marco Antônio Pereira Júnior.
  */
 public class NoiseUtils

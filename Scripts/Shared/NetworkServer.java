@@ -12,23 +12,3 @@
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
-
-/**
- * Classe utilitária de constantes globais.
- *
- * @author Marco Antônio Pereira Júnior.
- */
-public class GlobalChunkData
-{
-    // Constantes públicas de acesso estático.
-    
-    /**
-     * Tamanho horizontal dos pedaços.
-     */
-    public static final int W = 8;
-    
-    /**
-     * Tamanho vertical dos pedaços (incluindo teto e piso).
-     */
-    public static final int H = 8;
-}
