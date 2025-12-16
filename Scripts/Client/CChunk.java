@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -43,7 +43,7 @@ public class CChunk extends Component
     
     // Índice de vértice localizada no objeto.
     
-    private int verticeIndex = 4;
+    private int verticeIndex = 0;
     
     @AutoWired
     private ModelRenderer model = null;
@@ -147,7 +147,7 @@ public class CChunk extends Component
     /**
      * Retorna uma representação textual do pedaço.
      *
-     * @return Texto formatado com as coordenadas do pedaço.
+     * @return Um texto formatado com as coordenadas do pedaço.
      */
     @Override
     public String toString()
@@ -173,7 +173,7 @@ public class CChunk extends Component
         vertex.setNormals(localNormalsBuffer);
         vertex.setUVs(localUVBuffer);
         
-        vertex.apply(true, true);
+        vertex.apply();
         
         return vertex;
     }

@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -22,26 +22,17 @@ public class CUserGUI extends Component
 {
     // Campos privados.
     
-    // Referência ao analógico do jogador.
-    
-    private SUIJoystick joystick = null;
-    
-    // Referência da área de deslize do jogador.
-    
-    private SUISlideArea slideArea = null;
-    
-    // Métodos públicos.
+    /**
+     * Referência ao analógico do jogador.
+     */
+    private UIJoystick joystick = null;
     
     /**
-     * Obtém o título do componente.
-     *
-     * @return O título atual do componente CUserGUI.
+     * Referência da área de deslize do jogador.
      */
-    @Override
-    public String getComponentTittle()
-    {
-        return "CUserGUI";
-    }
+    private UISlideArea slideArea = null;
+    
+    // Métodos públicos.
     
     /**
      * Obtém o menu do componente.
@@ -66,20 +57,20 @@ public class CUserGUI extends Component
         
         if(joystickObject != null)
         {
-            joystick = joystickObject.findComponent(SUIJoystick.class);
+            joystick = joystickObject.findComponent(UIJoystick.class);
         }
         else
         {
-            Console.log("O analógico está nulo.");
+            Terminal.log("O analógico está nulo.");
         }
         
         if(slideAreaObject != null)
         {
-            slideArea = slideAreaObject.findComponent(SUISlideArea.class);
+            slideArea = slideAreaObject.findComponent(UISlideArea.class);
         }
         else
         {
-            Console.log("A área de deslize está nula.");
+            Terminal.log("A área de deslize está nula.");
         }
     }
     
@@ -88,7 +79,7 @@ public class CUserGUI extends Component
      *
      * @return O analógico atual.
      */
-    public SUIJoystick getJoystick()
+    public UIJoystick getJoystick()
     {
         return joystick;
     }
@@ -98,7 +89,7 @@ public class CUserGUI extends Component
      *
      * @return A área de deslize atual.
      */
-    public SUISlideArea getSlideArea()
+    public UISlideArea getSlideArea()
     {
         return slideArea;
     }

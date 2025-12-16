@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -30,6 +30,7 @@ public class SEntity extends Component implements ISEntity
     
     // A física de movimento da entidade.
     
+    @AutoWired
     protected Characterbody characterPhysics;
     
     // Código genético da entidade.
@@ -54,10 +55,9 @@ public class SEntity extends Component implements ISEntity
     @Override
     public void start()
     {
-        characterPhysics = myObject.getPhysicsEntity();
         baseSizeScaleFactor *= Random.range(0.0001f, 3f);
         
-        Console.log("Base do fator de escala do tamanho: " + baseSizeScaleFactor);
+        Terminal.log("Base do fator de escala do tamanho: " + baseSizeScaleFactor);
         myObject.getTransform().setScale(baseSizeScaleFactor);
         
         float width = characterPhysics.getWidth() * baseSizeScaleFactor;

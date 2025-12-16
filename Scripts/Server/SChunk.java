@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -51,16 +51,7 @@ public class SChunk extends Component
      */
     public int getBlock(int x, int y, int z)
     {
-        if(x >= 0 && x < voxels.getSizeX() && y >= 0 && y < voxels.getSizeY() && z >= 0 && z < voxels.getSizeZ())
-        {
-            return voxels.get(x, y, z);
-        }
-        else
-        {
-            Console.log(new Exception(String.format("Não pôde obter o bloco localizado nas coordenadas %d, %d e %d.", x, y, z)));
-            
-            return 0;
-        }
+        return voxels.get(x, y, z);
     }
     
     /**
@@ -83,8 +74,8 @@ public class SChunk extends Component
     {
         int code = 17;
         
-        code = 31 * code * (int)(myObject.getGlobalPosition().getX());
-        code = 31 * code * (int)(myObject.getGlobalPosition().getZ());
+        code = 31 * code + (int)(myObject.getGlobalPosition().getX());
+        code = 31 * code + (int)(myObject.getGlobalPosition().getZ());
         
         return code;
     }

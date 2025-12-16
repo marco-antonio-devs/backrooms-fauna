@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -27,6 +27,7 @@ public class SPlayerController extends Component
     
     // Corpo físico do jogador em questão.
     
+    @AutoWired
     private Characterbody physics = null;
     
     // A cabeça do personagem.
@@ -82,8 +83,6 @@ public class SPlayerController extends Component
     @Override
     public void start()
     {
-        physics = myPhysics.getPhysicsEntity(); // Todos os campos do componente como myObject são automáticamente atribuidos no painel de propriedades.
-        
         SChunkGenerator generator = WorldController.findObject("Chunk Storage").findComponent("SChunkGenerator");
         
         head = myObject.findChildObject("Head");
@@ -124,7 +123,7 @@ public class SPlayerController extends Component
     {
         float deltaTime = Time.getDeltaTime();
         
-        Vector2 slideArea = userInterface.getSlideArea().getAxis().getValue();
+        Vector2 slideArea = userInterface.getSlideArea().getValue();
         
         float slideFactorV = slideArea.getY();
         float slideFactorH = slideArea.getX();

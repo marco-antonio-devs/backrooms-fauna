@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -26,7 +26,7 @@ public class SChunkGenerator extends Component
     
     public MaterialFile material;
     
-    // Constantes públicas de acesso pública.
+    // Constantes públicas.
     
     /**
      * Tempo máximo em tiques para atualizar o estado de jogo atual.
@@ -36,12 +36,7 @@ public class SChunkGenerator extends Component
     /**
      * Quantidade de pedaços por cada quadro.
      */
-    public static final int CHUNKS_PER_FRAME = 2;
-    
-    /**
-     * Tamanho máximo da fila de pedaços.
-     */
-    public static final int MAX_QUEUED_CHUNKS = CHUNKS_PER_FRAME * CHUNKS_PER_FRAME;
+    public static final int CHUNKS_PER_FRAME = 1;
     
     // Campos privados.
     
@@ -71,11 +66,20 @@ public class SChunkGenerator extends Component
     
     // A referência de posição para o jogador selecionado.
     
-    private Vector3 playerPosition = new Vector3();
+    private final Vector3 playerPosition = new Vector3();
     
     // A referência de posições para os jogadores.
     
     private final Set<Long> playerChunkPositions = new HashSet<Long>();
+    
+    // Uma referência temporária de vetor tridimensional.
+    
+    private final Vector3 temporaryVector3 = new Vector3();
+    
+    // Uma referência temporária de jogador.
+    
+    @Singleton
+    private SPlayerController player;
     
     // Métodos públicos.
     
@@ -113,32 +117,26 @@ public class SChunkGenerator extends Component
      */
     public void update()
     {
-        for(SPlayerController player : players)
+        neededChunks.clear();
+        playerChunkPositions.clear();
+        
+        int px = (int)(player.getObject().getPosition().getX() / GlobalChunkData.W);
+        int pz = (int)(player.getObject().getPosition().getZ() / GlobalChunkData.W);
+        
+        playerChunkPositions.add(CoordinatesUtils.createCoordinate(px, pz));
+        
+        for(int x = -simulation; x <= simulation; x++)
         {
-            if(player == null || !player.getObject().exists())
+            for(int z = -simulation; z <= simulation; z++)
             {
-                continue;
-            }
-            
-            playerPosition.set(player.getObject().getGlobalPosition());
-            
-            int px = (int)(playerPosition.getX() / GlobalChunkData.W);
-            int pz = (int)(playerPosition.getZ() / GlobalChunkData.W);
-            
-            playerChunkPositions.add(CoordinatesUtils.createCoordinate(px, pz));
-            
-            for(int x = -simulation; x < simulation; x++)
-            {
-                for(int z = -simulation; z < simulation; z++)
-                {
-                    neededChunks.add(CoordinatesUtils.createCoordinate(x + px, z + pz));
-                }
+                neededChunks.add(CoordinatesUtils.createCoordinate(x + px, z + pz));
             }
         }
         
         for(long coord : neededChunks)
         {
-            if(!chunks.containsKey(coord) && !queuedChunks.contains(coord) && queuedChunks.size() <= MAX_QUEUED_CHUNKS) queuedChunks.add(coord);
+            if(!chunks.containsKey(coord) && !queuedChunks.contains(coord) && queuedChunks.size() <= CHUNKS_PER_FRAME)
+                queuedChunks.add(coord);
         }
         
         for(int i = 0; i < CHUNKS_PER_FRAME && !queuedChunks.isEmpty(); i++)
@@ -158,8 +156,8 @@ public class SChunkGenerator extends Component
     {
         int x = CoordinatesUtils.extractX(chunkPosition);
         int z = CoordinatesUtils.extractZ(chunkPosition);
-        int worldX = x * GlobalChunkData.W;
-        int worldZ = z * GlobalChunkData.W;
+        int worldX = x * GlobalChunkData.W - (GlobalChunkData.W / 2);
+        int worldZ = z * GlobalChunkData.W - (GlobalChunkData.W / 2);
         
         SpatialObject object = new SpatialObject("Chunk", myObject);
         ModelRenderer model = new ModelRenderer();
@@ -170,7 +168,9 @@ public class SChunkGenerator extends Component
         object.addComponent(new SChunk());
         model.setMaterialFile(material);
         
-        object.setPosition(new Vector3(worldX, 0f, worldZ));
+        temporaryVector3.set(worldX, 0f, worldZ);
+        
+        object.setPosition(temporaryVector3);
         object.setStatic(true);
         
         SChunk sChunk = object.findComponent(SChunk.class);
@@ -185,7 +185,8 @@ public class SChunkGenerator extends Component
      */
     public void addPlayerToList(SPlayerController value)
     {
-        if(players.contains(value)) return;
+        if(players.contains(value))
+            return;
         
         players.add(value);
     }
