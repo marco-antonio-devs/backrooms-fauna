@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -47,7 +47,7 @@ public class ChunkUtils
             case 5: rz--; break;
         }
         
-        if(rx < 0 || rx >= voxels.getSizeX() || ry < 0 || ry >= voxels.getSizeY() || rz < 0 || rz >= voxels.getSizeZ())
+        if(rx < 0 || rx >= GlobalChunkData.W || ry < 0 || ry >= GlobalChunkData.H || rz < 0 || rz >= GlobalChunkData.W)
         {
             return CubeDictionary.AIR_BLOCK;
         }

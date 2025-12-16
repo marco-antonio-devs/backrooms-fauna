@@ -25,10 +25,10 @@ public class GlobalChunkData
     /**
      * Tamanho horizontal dos pedaços.
      */
-    public static final int W = 8;
+    public static final int W = 16;
     
     /**
      * Tamanho vertical dos pedaços (incluindo teto e piso).
      */
-    public static final int H = 8;
+    public static final int H = 6;
 }

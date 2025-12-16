@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -94,7 +94,13 @@ public class ChunkBuffers
             {
                 for(int y = 0; y < GlobalChunkData.H; y++)
                 {
-                    voxels.set(x, y, z, (y == 0) ? CubeDictionary.NORMAL_CARPET_BLOCK : (y == GlobalChunkData.H - 1) ? CubeDictionary.CEILING_BLOCK : CubeDictionary.AIR_BLOCK);
+                    voxels.set(
+                        x, y, z, (
+                            y == 0 ?
+                            CubeDictionary.NORMAL_CARPET_BLOCK :
+                            (y == GlobalChunkData.H - 1 ? CubeDictionary.CEILING_BLOCK : CubeDictionary.AIR_BLOCK)
+                        )
+                    );
                     
                     for(int i = 0; i < 6; i++)
                     {
