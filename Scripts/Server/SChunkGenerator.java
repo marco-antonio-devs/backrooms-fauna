@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f6
+ * @version v2.2025.12f14
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -31,12 +31,17 @@ public class SChunkGenerator extends Component
     /**
      * Tempo máximo em tiques para atualizar o estado de jogo atual.
      */
-    public static final float UPDATE_INTERVAL = 0.5f;
+    public static final float UPDATE_INTERVAL = 0.2f;
     
     /**
      * Quantidade de pedaços por cada quadro.
      */
     public static final int CHUNKS_PER_FRAME = 1;
+    
+    /**
+     * Quantidade de descargas por cada quadro.
+     */
+    public static final int UNLOADS_PER_FRAME = 2;
     
     // Campos privados.
     
@@ -95,9 +100,20 @@ public class SChunkGenerator extends Component
     }
     
     /**
-     * Repete esta função a cada quadro a ser renderizado.
+     * Método chamado automaticamente no primeiro quadro de execução.
      *
-     * Este método pertence à classe Component, não chame-a (risco de sobrecarga da CPU e memória RAM).
+     * <p><b>Aviso:</b> este método é parte do ciclo de vida da classe Component e não deve ser invocado manualmente.</p>
+     */
+    @Override
+    public void start()
+    {
+        playerPosition.set(player.getObject().getTransform().getGlobalPosition());
+    }
+    
+    /**
+     * Método chamado automaticamente durante cada quadro de execução.
+     *
+     * <p><b>Aviso:</b> este método é parte do ciclo de vida da classe Component e não deve ser invocado manualmente.</p>
      */
     @Override
     public void repeat()
@@ -120,8 +136,8 @@ public class SChunkGenerator extends Component
         neededChunks.clear();
         playerChunkPositions.clear();
         
-        int px = (int)(player.getObject().getPosition().getX() / GlobalChunkData.W);
-        int pz = (int)(player.getObject().getPosition().getZ() / GlobalChunkData.W);
+        int px = (int)(playerPosition.getX() / GlobalChunkData.W);
+        int pz = (int)(playerPosition.getZ() / GlobalChunkData.W);
         
         playerChunkPositions.add(CoordinatesUtils.createCoordinate(px, pz));
         
@@ -186,7 +202,9 @@ public class SChunkGenerator extends Component
     public void addPlayerToList(SPlayerController value)
     {
         if(players.contains(value))
+        {
             return;
+        }
         
         players.add(value);
     }

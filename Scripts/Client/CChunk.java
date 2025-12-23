@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f6
+ * @version v2.2025.12f14
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -36,10 +36,13 @@ public class CChunk extends Component
     
     private Vector3Buffer localNormalsBuffer;
     
-    
     // Reserva local de mapeamento de textura.
     
     private Vector2Buffer localUVBuffer;
+    
+    // Dados locais do pedaço.
+    
+    private CChunkData chunkData = new CChunkData();
     
     // Índice de vértice localizada no objeto.
     
@@ -83,10 +86,8 @@ public class CChunk extends Component
         {
             public Object onBackground(Object input)
             {
-                CChunkData d = new CChunkData();
-                
-                ChunkBuffers.simulate(voxels, d);
-                generateBuffers(d);
+                ChunkBuffers.simulate(voxels, chunkData);
+                generateBuffers(chunkData);
                 
                 ChunkBuffers.generateMesh(
                     voxels,

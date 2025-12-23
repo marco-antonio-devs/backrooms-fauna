@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version vST2025.10f17
+ * @version v2.2025.12f14
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -39,8 +39,6 @@ public final class CHandler
     
     /**
      * Crie uma nova instância do manipulador de cliente.
-     *
-     * @throws IOException Uma exceção de entrada e saída, indicando alguma falha na conexão.
      */
     public CHandler()
     {
@@ -50,7 +48,7 @@ public final class CHandler
         }
         catch(IOException exception)
         {
-            Console.log("Houve um problema ao tentar lhe conectar ao servidor.");
+            Terminal.log("Houve um problema ao tentar lhe conectar ao servidor.");
             exception.printStackTrace();
         }
     }
@@ -59,56 +57,33 @@ public final class CHandler
     
     /**
      * Inicialize este manipulador de cliente de maneira assíncrona.
-     *
-     * @return Um código de estado de conexão (0 para "nenhum problema de conexão", 255 para "houve um problema interno" e 64 para "cliente não definido").
      */
-    public int start()
+    public void start()
     {
-        if(player == null)
-        {
-            return 64;
-        }
         
-        int code = 0;
-        
-        Console.log("Atualmente inicializando o manipulador de cliente...");
-        
-        new AsyncTask(new AsyncRunnable()
-        {
-            public Object onBackground(Object input)
-            {
-                return 65536;
-            }
-            
-            public void onEngine(Object result)
-            {
-                if(result instanceof Integer)
-                {
-                    Console.log(result);
-                }
-            }
-        });
-        
-        return code;
     }
     
     /**
-     * Anexe o controlador de jogador ao manipulador de cliente.
+     * Anexe o controlador de jogador ao manipulador de cliente, permitindo chamadas em cadeia.
      *
      * @param player O controlador solicitado para esta operação.
+     *
+     * @return A própria instância da classe.
      */
-    public void attachSPlayerController(SPlayerController player)
+    public CHandler attachSPlayerController(SPlayerController player)
     {
         if(player == null)
         {
             throw new IllegalArgumentException("O controlador de jogador cujo era para ser anexado encontra-se nulo. Por favor, defina-o.");
         }
         
-        if(this.player == null)
+        if(this.player != null)
         {
             throw new IllegalArgumentException("Já está presente um controlador de jogador neste manipulador de cliente.");
         }
         
         this.player = player;
+        
+        return this;
     }
 }
