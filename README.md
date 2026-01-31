@@ -20,6 +20,6 @@ Neste repositório, você irá encontrar vários códigos escritos na linguagem 
 # Compatibilidade
 
 O uso de uma tecnologia obsoleta (Java 7.0) tem uma base séria relacionada ao compilador.
-- Após analisar os arquivos de meta-dados localizados para cada, foi descoberto de que tal compilador seja baseado no uso de **Dalvik** (usando o arquivo `.dex` gerado a partir dos arquivos de código-fonte).
-- Basicamente, um compilador antigo e o único escolhido pelo criador da **ITsMagic Engine**, que não podê utilizar do **Gradle** como ferramenta integrada.
+- Após analisar os arquivos de meta-dados localizados, foi descoberto de que tal compilador é baseado no uso de **Dalvik** (usando o arquivo binário `.dex` gerado a partir dos arquivos de código-fonte).
+- Basicamente, um compilador antigo e o único escolhido pelo criador da **ITsMagic Engine**, que não podê utilizar o **Gradle** como ferramenta integrada.
 - Segundo o Lucas (criador da **ITsMagic Engine**), compiladores modernos requerem do **Gradle**, que por sua vez é *praticamente* impossível de integrar funcionalmente no ambiente **Android**.
