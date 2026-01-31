@@ -3,6 +3,10 @@
 O jogo-eletrônico **Backrooms: Fauna** é um projeto sobre *biologia especulativa* utilizando uma *base científica rígida*.
 O ambiente trata-se de uma *reinterpretação* do conceito de **Backrooms** como um complexo de origem humana.
 
+# Informação útil
+
+Este repositório foi criado para armazenar o código-fonte com segurança (técnica de "backup").
+
 # História
 
 O projeto inicializou-se em *2023* com o nome **Spatial**, sem foco na biologia das criaturas.
