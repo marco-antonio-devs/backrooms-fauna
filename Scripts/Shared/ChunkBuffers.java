@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f14
+ * @version v2.2026.02f1
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -18,7 +18,7 @@ package JAVARuntime;
  *
  * @author Marco Antônio Pereira Júnior.
  */
-public class ChunkBuffers
+public final class ChunkBuffers
 {
     // Constantes públicas de acesso estático.
     
@@ -99,29 +99,39 @@ public class ChunkBuffers
             {
                 for(int y = 0; y < GlobalChunkData.H; y++)
                 {
-                    voxels.set(
-                        x,
-                        y,
-                        z,
-                        (
-                            y == 0 ?
-                            CubeDictionary.NORMAL_CARPET_BLOCK :
-                            (
-                                y == GlobalChunkData.H - 1 ?
-                                CubeDictionary.CEILING_BLOCK :
-                                CubeDictionary.AIR_BLOCK
-                            )
+                    int blockType = (
+                        y == 0 ?
+                        CubeDictionary.NORMAL_CARPET_BLOCK : (
+                            y == GlobalChunkData.H - 1 ?
+                            CubeDictionary.CEILING_BLOCK :
+                            CubeDictionary.AIR_BLOCK
                         )
                     );
                     
-                    for(int i = 0; i < 6; i++)
+                    voxels.set(x, y, z, blockType);
+                    
+                    RoomRect roomRect = new RoomRect(3, 3, 3, 3);
+                    
+                    roomRect.applyToVoxelsMap(voxels);
+                    
+                    if(blockType != CubeDictionary.AIR_BLOCK)
                     {
-                        if(ChunkUtils.getSideBlockID(voxels, x, y, z, i) == CubeDictionary.AIR_BLOCK)
+                        int visibleFaces = 0;
+                        
+                        for(int side = 0; side < 6; side++)
                         {
-                            data.incVerticesCount();
-                            data.incPolygonsCount();
-                            data.incNormalsCount();
-                            data.incUVCount();
+                            if(ChunkUtils.getSideBlockID(voxels, x, y, z, side) == CubeDictionary.AIR_BLOCK)
+                            {
+                                visibleFaces++;
+                            }
+                            
+                            if(visibleFaces > 0)
+                            {
+                                data.incVerticesCount();
+                                data.incPolygonsCount();
+                                data.incNormalsCount();
+                                data.incUVCount();
+                            }
                         }
                     }
                 }
@@ -148,7 +158,7 @@ public class ChunkBuffers
                 {
                     if(voxels.get(x, y, z) != CubeDictionary.AIR_BLOCK)
                     {
-                        verticeIndex = addCube(VERTICE_OFFSETS, voxels, v, p, n, uv, x, y, z, verticeIndex);
+                        verticeIndex = addCube(voxels, v, p, n, uv, x, y, z, verticeIndex);
                     }
                 }
             }
@@ -167,49 +177,50 @@ public class ChunkBuffers
      *
      * @return O novo índice de vértice.
      */
-    public static int addCube(int[][][] positions, OH3LevelIntArray voxels, Vector3Buffer vertices, Point3Buffer polygons, Vector3Buffer normals, Vector2Buffer uv, int x, int y, int z, int verticeIndex)
+    public static int addCube(OH3LevelIntArray voxels, Vector3Buffer vertices, Point3Buffer polygons, Vector3Buffer normals, Vector2Buffer uv, int x, int y, int z, int verticeIndex)
     {
         int cubeID = voxels.get(x, y, z);
+        
+        int visibleFaceCount = 0;
+        int[] visibleSides = new int[6];
         
         if(cubeID == CubeDictionary.AIR_BLOCK)
         {
             return verticeIndex;
         }
         
-        Vector2 uvPoint = ChunkUtils.determineBlockUVMapping(cubeID);
-        
-        byte visibleFaces = 0;
-        
         for(int side = 0; side < 6; side++)
         {
             if(ChunkUtils.getSideBlockID(voxels, x, y, z, side) == CubeDictionary.AIR_BLOCK)
             {
-                visibleFaces |= (1 << side);
+                visibleSides[visibleFaceCount++] = side;
             }
         }
         
-        if(visibleFaces == 0)
+        if(visibleFaceCount == 0)
         {
             return verticeIndex;
         }
         
-        for(int side = 0; side < 6; side++)
+        
+        Vector2 point = ChunkUtils.determineBlockUVMapping(cubeID);
+        
+        for(int faceIndex = 0; faceIndex < visibleFaceCount; faceIndex++)
         {
-            if((visibleFaces & (1 << side)) == 0)
-            {
-                continue;
-            }
+            int side = visibleSides[faceIndex];
             
             for(int verticeID = 0; verticeID < 4; verticeID++)
             {
                 int[] positionOffset = VERTICE_OFFSETS[side][verticeID];
                 int[] normalOffset = NORMAL_OFFSETS[side];
                 
-                float uCoordinate = uvPoint.getX() * TILE_SIZE + ((verticeID == 0 || verticeID == 3) ? 0 : TILE_SIZE);
-                float vCoordinate = uvPoint.getY() * TILE_SIZE + ((verticeID < 2) ? TILE_SIZE : 0);
+                final float u = ((verticeID == 0 || verticeID == 3) ? 0 : 1);
+                final float v = ((verticeID < 2) ? 0 : 1);
+                
+                float uvX = (point.getX() * TILE_SIZE) + (u * TILE_SIZE) / ATLAS_BLOCK_TEXTURES;
+                float uvY = (point.getY() * TILE_SIZE) + (v * TILE_SIZE) / ATLAS_BLOCK_TEXTURES;
                 
                 addVertice(
-                    verticeIndex,
                     positionOffset,
                     vertices,
                     normals,
@@ -218,20 +229,22 @@ public class ChunkBuffers
                     x,
                     y,
                     z,
-                    uCoordinate,
-                    vCoordinate
+                    uvX,
+                    uvY
                 );
             }
             
+            int currentIndex = verticeIndex;
+            
             polygons.put(
-                POLY_ORDERS[0][0] + verticeIndex,
-                POLY_ORDERS[0][1] + verticeIndex,
-                POLY_ORDERS[0][2] + verticeIndex
+                POLY_ORDERS[0][0] + currentIndex,
+                POLY_ORDERS[0][1] + currentIndex,
+                POLY_ORDERS[0][2] + currentIndex
             );
             polygons.put(
-                POLY_ORDERS[1][0] + verticeIndex,
-                POLY_ORDERS[1][1] + verticeIndex,
-                POLY_ORDERS[1][2] + verticeIndex
+                POLY_ORDERS[1][0] + currentIndex,
+                POLY_ORDERS[1][1] + currentIndex,
+                POLY_ORDERS[1][2] + currentIndex
             );
             
             verticeIndex += 4;
@@ -255,7 +268,7 @@ public class ChunkBuffers
      * @param uvX Coordenada U do mapeamento de textura.
      * @param uvY Coordenada V do mapeamento de textura.
      */
-    private static void addVertice(int verticeIndex, int[] positions, Vector3Buffer v, Vector3Buffer n, Vector2Buffer uv, int[] offset, int x, int y, int z, float uvX, float uvY)
+    private static void addVertice(int[] positions, Vector3Buffer v, Vector3Buffer n, Vector2Buffer uv, int[] offset, int x, int y, int z, float uvX, float uvY)
     {
         v.put(positions[0] + x, positions[1] + y, positions[2] + z);
         n.put(offset[0], offset[1], offset[2]);

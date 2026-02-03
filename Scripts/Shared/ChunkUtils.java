@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f14
+ * @version v2.2026.02f1
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -37,24 +37,32 @@ public class ChunkUtils
         int ry = y;
         int rz = z;
         
-        switch(sideIndex)
-        {
-            case 0: rx++; break;
-            case 1: rx--; break;
-            case 2: ry++; break;
-            case 3: ry--; break;
-            case 4: rz++; break;
-            case 5: rz--; break;
-        }
+        int axis = sideIndex >> 1;
+        int direction = (sideIndex & 1) == 0 ? 1 : -1;
         
-        if(rx < 0 || rx >= GlobalChunkData.W || ry < 0 || ry >= GlobalChunkData.H || rz < 0 || rz >= GlobalChunkData.W)
+        if(axis == 0)
         {
-            return CubeDictionary.AIR_BLOCK;
+            rx += direction;
+        }
+        else if(axis == 1)
+        {
+            ry += direction;
         }
         else
         {
-            return voxels.get(rx, ry, rz);
+            rz += direction;
         }
+        
+        if((
+            rx | (GlobalChunkData.W - 1 - rx) |
+            ry | (GlobalChunkData.H - 1 - ry) |
+            rz | (GlobalChunkData.W - 1 - rz)
+        ) < 0)
+        {
+            return CubeDictionary.AIR_BLOCK;
+        }
+        
+        return voxels.get(rx, ry, rz);
     }
     
     /**

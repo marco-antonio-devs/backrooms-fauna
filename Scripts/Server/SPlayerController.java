@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f14
+ * @version v2.2026.02f1
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -91,6 +91,22 @@ public class SPlayerController extends Component
         generator.addPlayerToList(this);
         
         userInterface.refreshGUI();
+        
+        invoke(0.1f, new InvokeListener()
+        {
+            public void run()
+            {
+                physics.setEnabled(false);
+            }
+        });
+        
+        invoke(15f, new InvokeListener()
+        {
+            public void run()
+            {
+                physics.setEnabled(true);
+            }
+        });
     }
     
     /**

@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2025.12f14
+ * @version v2.2026.02f1
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -31,17 +31,12 @@ public class SChunkGenerator extends Component
     /**
      * Tempo máximo em tiques para atualizar o estado de jogo atual.
      */
-    public static final float UPDATE_INTERVAL = 0.2f;
+    public static final float UPDATE_INTERVAL = 0.3f;
     
     /**
      * Quantidade de pedaços por cada quadro.
      */
     public static final int CHUNKS_PER_FRAME = 1;
-    
-    /**
-     * Quantidade de descargas por cada quadro.
-     */
-    public static final int UNLOADS_PER_FRAME = 2;
     
     // Campos privados.
     
@@ -152,7 +147,9 @@ public class SChunkGenerator extends Component
         for(long coord : neededChunks)
         {
             if(!chunks.containsKey(coord) && !queuedChunks.contains(coord) && queuedChunks.size() <= CHUNKS_PER_FRAME)
+            {
                 queuedChunks.add(coord);
+            }
         }
         
         for(int i = 0; i < CHUNKS_PER_FRAME && !queuedChunks.isEmpty(); i++)
