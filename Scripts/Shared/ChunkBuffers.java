@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2026.02f4
+ * @version v2.2026.02f102025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
@@ -110,10 +110,6 @@ public final class ChunkBuffers
                     
                     voxels.set(x, y, z, blockType);
                     
-                    RoomRect roomRect = new RoomRect(3, 3, 3, 3);
-                    
-                    roomRect.applyToVoxelsMap(voxels);
-                    
                     if(blockType != CubeDictionary.AIR_BLOCK)
                     {
                         int visibleFaces = 0;
@@ -137,6 +133,10 @@ public final class ChunkBuffers
                 }
             }
         }
+        
+        RoomRect roomRect = new RoomRect(0, 0, 4, 4);
+        
+        roomRect.applyToVoxelsMap(voxels);
     }
     
     /**

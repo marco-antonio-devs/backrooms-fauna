@@ -8,7 +8,7 @@
  * - Que por sua vez é quase impossível de funcionar no ambiente de desenvolvimente diretamente pelos dispositivos via-Android.
  * </p>
  *
- * @version v2.2026.02f4
+ * @version v2.2026.02f102025.12f6
  * @author Lucas Leandro - O criador original do motor.
  */
 package JAVARuntime;
