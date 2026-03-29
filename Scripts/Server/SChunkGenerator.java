@@ -31,18 +31,18 @@ public class SChunkGenerator extends Component
     /**
      * Tempo máximo em tiques para atualizar o estado de jogo atual.
      */
-    public static final float UPDATE_INTERVAL = 0.3f;
+    public static final float UPDATE_INTERVAL = 0.2f;
     
     /**
      * Quantidade de pedaços por cada quadro.
      */
-    public static final int CHUNKS_PER_FRAME = 1;
+    public static final int CHUNKS_PER_FRAME = 2;
     
     // Campos privados.
     
     // A distância de simulação em raio.
     
-    private final int simulation = 1;
+    private final int simulation = 3;
     
     // O mapa de pedaços e suas posições.
     
@@ -103,6 +103,8 @@ public class SChunkGenerator extends Component
     public void start()
     {
         playerPosition.set(player.getObject().getTransform().getGlobalPosition());
+        
+        update();
     }
     
     /**
@@ -128,9 +130,6 @@ public class SChunkGenerator extends Component
      */
     public void update()
     {
-        neededChunks.clear();
-        playerChunkPositions.clear();
-        
         int px = (int)(playerPosition.getX() / GlobalChunkData.W);
         int pz = (int)(playerPosition.getZ() / GlobalChunkData.W);
         
@@ -140,7 +139,16 @@ public class SChunkGenerator extends Component
         {
             for(int z = -simulation; z <= simulation; z++)
             {
-                neededChunks.add(CoordinatesUtils.createCoordinate(x + px, z + pz));
+                long coordinate = CoordinatesUtils.createCoordinate(x + px, z + pz);
+                
+                if(!neededChunks.contains(coordinate))
+                {
+                    neededChunks.add(coordinate);
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
         
@@ -184,7 +192,6 @@ public class SChunkGenerator extends Component
         temporaryVector3.set(worldX, 0f, worldZ);
         
         object.setPosition(temporaryVector3);
-        object.setStatic(true);
         
         SChunk sChunk = object.findComponent(SChunk.class);
         

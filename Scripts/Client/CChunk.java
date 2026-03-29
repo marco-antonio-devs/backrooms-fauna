@@ -82,14 +82,14 @@ public class CChunk extends Component
     {
         final OH3LevelIntArray voxels = parentSChunk.getVoxelArray();
         
-        ChunkBuffers.simulate(voxels, chunkData);
-        generateBuffers(chunkData);
-        
         new AsyncTask(new AsyncRunnable()
         {
             public Object onBackground(Object input)
             {
-                ChunkBuffers.generateMesh(
+                ChunkBuffers.simulate(voxels, chunkData);
+                generateBuffers(chunkData);
+                
+                verticeIndex = ChunkBuffers.generateMesh(
                     voxels,
                     localVerticesBuffer,
                     localPolygonsBuffer,
@@ -104,6 +104,8 @@ public class CChunk extends Component
             public void onEngine(Object result)
             {
                 Vertex v = apply();
+                
+                Terminal.log(verticeIndex);
                 
                 model.setVertex(v);
                 collider.setVertex(v);

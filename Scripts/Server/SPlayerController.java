@@ -91,22 +91,6 @@ public class SPlayerController extends Component
         generator.addPlayerToList(this);
         
         userInterface.refreshGUI();
-        
-        invoke(0.1f, new InvokeListener()
-        {
-            public void run()
-            {
-                physics.setEnabled(false);
-            }
-        });
-        
-        invoke(15f, new InvokeListener()
-        {
-            public void run()
-            {
-                physics.setEnabled(true);
-            }
-        });
     }
     
     /**

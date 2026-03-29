@@ -112,16 +112,9 @@ public final class ChunkBuffers
                     
                     if(blockType != CubeDictionary.AIR_BLOCK)
                     {
-                        int visibleFaces = 0;
-                        
                         for(int side = 0; side < 6; side++)
                         {
                             if(ChunkUtils.getSideBlockID(voxels, x, y, z, side) == CubeDictionary.AIR_BLOCK)
-                            {
-                                visibleFaces++;
-                            }
-                            
-                            if(visibleFaces > 0)
                             {
                                 data.incVerticesCount();
                                 data.incPolygonsCount();
@@ -133,10 +126,6 @@ public final class ChunkBuffers
                 }
             }
         }
-        
-        RoomRect roomRect = new RoomRect(0, 0, 4, 4);
-        
-        roomRect.applyToVoxelsMap(voxels);
     }
     
     /**
@@ -148,7 +137,7 @@ public final class ChunkBuffers
      * @param uv A reserva de mapeamento tipo UV do pedaço.
      * @param verticeIndex O índice de vértice.
      */
-    public static void generateMesh(OH3LevelIntArray voxels, Vector3Buffer v, Point3Buffer p, Vector3Buffer n, Vector2Buffer uv, int verticeIndex)
+    public static int generateMesh(OH3LevelIntArray voxels, Vector3Buffer v, Point3Buffer p, Vector3Buffer n, Vector2Buffer uv, int verticeIndex)
     {
         for(int x = 0; x < GlobalChunkData.W; x++)
         {
@@ -163,6 +152,8 @@ public final class ChunkBuffers
                 }
             }
         }
+        
+        return verticeIndex;
     }
     
     /**
@@ -201,7 +192,6 @@ public final class ChunkBuffers
         {
             return verticeIndex;
         }
-        
         
         Vector2 point = ChunkUtils.determineBlockUVMapping(cubeID);
         
