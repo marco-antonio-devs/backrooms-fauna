@@ -25,22 +25,22 @@ public final class CubeDictionary
     /**
      * Bloco de ar (representa o espaço vazio).
      */
-    public static final byte AIR_BLOCK = 0;
+    public static final byte AIR_BLOCK = 3;
     
     /**
      * Bloco de teto do pedaço.
      */
-    public static final byte CEILING_BLOCK = 1;
+    public static final byte CEILING_BLOCK = 2;
     
     /**
      * Bloco de carpete normal (representa o carpete limpo).
      */
-    public static final byte NORMAL_CARPET_BLOCK = 2;
+    public static final byte NORMAL_CARPET_BLOCK = 1;
     
     /**
      * Bloco de parede amarela (representa a parede monocromática do pedaço).
      */
-    public static final byte YELLOW_WALL_BLOCK = 3;
+    public static final byte YELLOW_WALL_BLOCK = 0;
     
     // Construtores privados.
     

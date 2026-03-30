@@ -83,24 +83,24 @@ public class RoomRect
      */
     public void applyToVoxelsMap(OH3LevelIntArray voxels)
     {
-        for(int dx = 0; dx < width; dx++)
+        for(int dx = x; dx < width; dx++)
         {
-            for(int dz = 0; dz < depth; dz++)
+            for(int dz = z; dz < depth; dz++)
             {
                 for(int y = 1; y < voxels.getSizeY() - 1; y++)
                 {
                     boolean border = (
-                        dx == 0 ||
+                        dx == 1 ||
                         dx == width - 1 ||
-                        dz == 0 ||
+                        dz == 1 ||
                         dz == depth - 1
                     );
                     
                     voxels.set(
                         x + dx,
                         y,
-                        z + dz, (border) ?
-                        CubeDictionary.YELLOW_WALL_BLOCK : CubeDictionary.AIR_BLOCK
+                        z + dz,
+                        border ? CubeDictionary.YELLOW_WALL_BLOCK : CubeDictionary.AIR_BLOCK
                     );
                 }
             }
