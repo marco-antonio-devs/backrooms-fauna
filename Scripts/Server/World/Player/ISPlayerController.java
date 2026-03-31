@@ -22,42 +22,34 @@ package JAVARuntime;
 /// import JAVARuntime.*;
 
 /**
- * Classe utilitária de dados globais para pedaços do mundo.
+ * Interface básica para representar o jogador.
  * 
  * <p>
- * Contém informações técnicas como diferentes níveis de prioridades e afins.
+ * Contém funções para auxiliar em cálculos sensíveis isolados do <b>cliente</b>.
  * </p>
  * 
  * @author Marco Antônio Pereira Júnior
  * @since  v2.2026.03f13
  */
-public final class GlobalChunkData
+public interface ISPlayerController
 {
     /// Declaração de métodos. ///
     
     /**
-     * Nível máximo de prioridades.
+     * Obtém o identificador único universal do respectivo jogador.
      * 
-     * @note Este campo é acessível de forma estática.
-     */
-    public static final int MAX_PRIORITY_LEVEL = 15;
-    
-    /**
-     * Nível médio de prioridades.
+     * <p>
+     * O uso padrão deste método consiste no seguinte código de exemplo abaixo.
+     * </p>
+     * <p>
+     * {@code
+     * UUID localUUID = serverPlayer.getUUID();
+     * }
+     * </p>
      * 
-     * @note Este campo é acessível de forma estática.
-     */
-    public static final int MID_PRIORITY_LEVEL = 7;
-    
-    /// Declaração de construtores. ///
-    
-    /**
-     * Crie uma instância da respectiva classe.
+     * @return O identificador único universal local do respectivo jogador.
      * 
-     * @note Este construtor não pode ser acessado por questões de segurança.
+     * @since  v2.2026.03f13
      */
-    private GlobalChunkData()
-    {
-        throw new UnsupportedOperationException("Não está autorizado a instanciação desta classe. Use seus métodos estáticos.");
-    }
+    public UUID getUUID();
 }
