@@ -93,7 +93,7 @@ public final class BFWorldUtils
      * 
      * @return Uma cópia da tabela, cujo não pode ser manipulada.
      */
-    public static Map getServerWorldChunks()
+    public static Map<Long, SWorldChunk> getServerWorldChunks()
     {
         return Collections.unmodifiableMap(serverWorldChunks);
     }

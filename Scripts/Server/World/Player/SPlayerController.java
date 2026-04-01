@@ -58,6 +58,25 @@ public final class SPlayerController extends Component implements ISPlayerContro
     /// Implementação de métodos. ///
     
     /**
+     * Inicialize este componente no primeiro tique após sua instanciação.
+     * 
+     * <p>
+     * Usado principalmente para a configuração deste componente.
+     * </p>
+     * 
+     * @note  Este método é chamado automaticamente e não precisa de chamada posterior.
+     * @since v2.2026.03f13
+     */
+    @Override
+    public void start()
+    {
+		localUUID = UUID.randomUUID();
+		localPhysics = (Characterbody)(getObject().findComponent(Characterbody.class));
+		
+		Objects.requireNonNull(localPhysics, "Este objeto não contém ou não definiu uma referência válida para o corpo físico. Por favor, defina a referência.");
+	}
+    
+    /**
      * Obtém o identificador único universal do respectivo jogador.
      * 
      * <p>
@@ -77,15 +96,20 @@ public final class SPlayerController extends Component implements ISPlayerContro
      * Obtém o identificador único universal do respectivo jogador.
      * 
      * <p>
-     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
+     * Este método é uma implementação do método de mesmo nome da interface {@code ISPlayerController}.
+     * </p>
+     * <p>
+     * Caso o corpo físico não seja encontrado, uma exceção de ponteiro nulo será disparada indicando o erro.
      * </p>
      * 
-     * @return O identificador único universal local do respectivo jogador.
+     * @return O corpo físico local do respectivo jogador (caso não haja um erro).
      * 
      * @since  v2.2026.03f13
      */
     public Characterbody getCharacterPhysics()
     {
+		Objects.requireNonNull(localPhysics, "Este objeto não contém ou não definiu uma referência válida para a contra-parte do lado do cliente. Por favor, defina a referência.");
+		
         return localPhysics;
     }
 }

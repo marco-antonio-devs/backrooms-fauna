@@ -52,4 +52,25 @@ public interface ISPlayerController
      * @since  v2.2026.03f13
      */
     public UUID getUUID();
+    
+    /**
+     * Obtém o identificador único universal do respectivo jogador.
+     * 
+     * <p>
+     * O uso padrão deste método consiste no seguinte código de exemplo abaixo.
+     * </p>
+     * <p>
+     * {@code
+     * Characterbody localPhysics = serverPlayer.getCharacterPhysics();
+     * }
+     * </p>
+     * <p>
+     * Caso o corpo físico não seja encontrado, uma exceção de ponteiro nulo será disparada indicando o erro.
+     * </p>
+     * 
+     * @return O corpo físico local do respectivo jogador (caso não haja um erro)..
+     * 
+     * @since  v2.2026.03f13
+     */
+    public Characterbody getCharacterPhysics();
 }

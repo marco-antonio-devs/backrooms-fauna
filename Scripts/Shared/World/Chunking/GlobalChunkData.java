@@ -33,7 +33,7 @@ package JAVARuntime;
  */
 public final class GlobalChunkData
 {
-    /// Declaração de métodos. ///
+    /// Declaração de atributos. ///
     
     /**
      * Nível máximo de prioridades.

@@ -83,6 +83,7 @@ public final class SWorldChunk extends Component implements ISWorldChunk
      * @note  Este método é chamado automaticamente e não precisa de chamada posterior.
      * @since v2.2026.03f13
      */
+    @Override
     public void start()
     {
         localUUID = UUID.randomUUID();
@@ -112,7 +113,7 @@ public final class SWorldChunk extends Component implements ISWorldChunk
      * Obtém a contra-parte do lado do <b>cliente</b> do respectivo pedaço.
      * 
      * <p>
-     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
+     * Este método é uma implementação do método de mesmo nome da interface {@code ISWorldChunk}.
      * </p>
      * <p>
      * Caso a contra-parte não seja encontrada, uma exceção de ponteiro nulo será disparada indicando o erro.

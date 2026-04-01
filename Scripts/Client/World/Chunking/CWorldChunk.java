@@ -84,7 +84,7 @@ public final class CWorldChunk extends Component implements ICWorldChunk
      * Obtém a contra-parte do lado do <b>servidor</b> do respectivo pedaço.
      * 
      * <p>
-     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
+     * Este método é uma implementação do método de mesmo nome da interface {@code ICWorldChunk}.
      * </p>
      * <p>
      * Caso a contra-parte não seja encontrada, uma exceção de ponteiro nulo será disparada indicando o erro.
