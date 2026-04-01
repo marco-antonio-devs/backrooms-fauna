@@ -42,10 +42,18 @@ public final class SPlayerController extends Component implements ISPlayerContro
      * Usado para armazenar-lo em uma tabela baseada em <b>hash</b>.
      * </p>
      * 
-     * @note  Este campo é privado por questões de segurança. Utilize o método {@code getUUID()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
+     * @note  Este atributo é privado por questões de segurança. Utilize o método {@code getUUID()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
      * @since v2.2026.03f13
      */
     private UUID localUUID = null;
+    
+    /**
+     * Referência ao corpo físico do objeto.
+     * 
+     * @note  Este atributo é privado por questões de segurança. Utilize o método {@code getCharacterPhysics()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
+     * @since v2.2026.03f13
+     */
+    private Characterbody localPhysics = null;
     
     /// Implementação de métodos. ///
     
@@ -63,5 +71,21 @@ public final class SPlayerController extends Component implements ISPlayerContro
     public UUID getUUID()
     {
         return localUUID;
+    }
+    
+    /**
+     * Obtém o identificador único universal do respectivo jogador.
+     * 
+     * <p>
+     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
+     * </p>
+     * 
+     * @return O identificador único universal local do respectivo jogador.
+     * 
+     * @since  v2.2026.03f13
+     */
+    public Characterbody getCharacterPhysics()
+    {
+        return localPhysics;
     }
 }
