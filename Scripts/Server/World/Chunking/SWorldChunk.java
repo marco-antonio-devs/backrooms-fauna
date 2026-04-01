@@ -42,28 +42,10 @@ public final class SWorldChunk extends Component implements ISWorldChunk
      * Usado para armazenar-lo em uma tabela baseada em <b>hash</b>.
      * </p>
      * 
-     * @note  Este campo é privado por questões de segurança. Utilize o método {@code getUUID()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
+     * @note  Este atributo é privado por questões de segurança. Utilize o método {@code getUUID()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
      * @since v2.2026.03f13
      */
     private UUID localUUID = null;
-    
-    /// Implementação de métodos. ///
-    
-    /**
-     * Obtém o identificador único universal do respectivo jogador.
-     * 
-     * <p>
-     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
-     * </p>
-     * 
-     * @return O identificador único universal local do respectivo jogador.
-     * 
-     * @since  v2.2026.03f13
-     */
-    public UUID getUUID()
-    {
-        return localUUID;
-    }
     
     /**
      * Referência do componente que implementa a interface da contra-parte do respectivo pedaço.
@@ -108,6 +90,22 @@ public final class SWorldChunk extends Component implements ISWorldChunk
         updatePriorityLevel = 15;
         
         Objects.requireNonNull(clientWorldChunk, "Este objeto não contém ou não definiu uma referência válida para a contra-parte do lado do cliente. Por favor, defina a referência.");
+    }
+    
+    /**
+     * Obtém o identificador único universal do respectivo jogador.
+     * 
+     * <p>
+     * Este método é uma implementação do método de mesmo nome da interface <b>ISWorldChunk<b>.
+     * </p>
+     * 
+     * @return O identificador único universal local do respectivo pedaço do mundo.
+     * 
+     * @since  v2.2026.03f13
+     */
+    public UUID getUUID()
+    {
+        return localUUID;
     }
     
     /**

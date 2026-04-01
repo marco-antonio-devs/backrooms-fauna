@@ -42,7 +42,7 @@ public final class CWorldChunk extends Component implements ICWorldChunk
      * Usado internamente para não ser preciso o uso do método {@code getServerSidedCounterpart()}.
      * </p>
      * 
-     * @note  Este campo é privado por questões de segurança. Utilize o método {@code getServerSidedCounterpart()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
+     * @note  Este atributo é privado por questões de segurança. Utilize o método {@code getServerSidedCounterpart()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
      * @since v2.2026.03f13
      */
     private SWorldChunk serverWorldChunk = null;
@@ -54,7 +54,7 @@ public final class CWorldChunk extends Component implements ICWorldChunk
      * Usado internamente para não ser preciso o uso do método {@code getUpdatePriorityLevel()}.
      * </p>
      * 
-     * @note  Este campo é privado por questões de segurança. Utilize o método {@code getUpdatePriorityLevel()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
+     * @note  Este atributo é privado por questões de segurança. Utilize o método {@code getUpdatePriorityLevel()} para obter-lo (requer que a instância seja préviamente inicializada no mundo).
      * @since v2.2026.03f13
      */
     private int renderPriorityLevel = 0;
